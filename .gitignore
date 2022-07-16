@@ -1,0 +1,6 @@
+/node_modules
+/dist
+/es
+/lib
+/examples
+.DS_Store
