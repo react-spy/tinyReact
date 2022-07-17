@@ -3,51 +3,47 @@
  * @author spy
  */
 
-export const createElement = ({
-    type,
-    props,
-    ...children
-}) => {
-    if (typeof type === 'string') {
-        const element = document.createElement(type);
-        if (props) {
-            Object.keys(props).forEach(key => {
-                if (key === 'style') {
-                    const styles = props[key];
-                    Object.keys(styles).forEach((styleKey) => {
-                        element.style[styleKey] = styles[styleKey];
-                    });
-                } else if (key === 'className') {
-                    element.className = props.className;
-                } else if (key === 'id') {
-                    element.id = props.id;
-                } else if (key === 'ref') {
-                    props.ref(element);
-                } else if (key === 'onClick') {
-                    element.onclick = props.onClick;
-                } else {
-                    element.setAttribute(key, props[key]);
-                }
-            });
-        }
-        // if (children) {
-        //     children.forEach(child => {
-        //         element.appendChild(child);
-        //     );
-        // }
-        return {
-            type:"1",
-            props: {
-                
-            },
-            children: []
-        };
+// const virtualDom = (
+//     <div className="container">
+//         <h1>我是标题</h1>
+//         <p>我是内容</p>
+//         {
+//             1 > 2 && "我是span1"
+//         }
+//         {
+//             console.log(1)
+//         }
+//         {
+//             2 > 1
+//         }
+//         {
+//             1 < 2 && "我是span2"
+//         }
+//     </div>
+// );
 
-    }
-    return {
-        type: "2",
-        props: {
-            "aa":1
+export const createElement = (type, props, ...children) => {
+    /**
+     * 处理children
+     * 目的：
+     * 1、剔除undefined、null、true、false
+     * 2、将字符串转换为对象展示
+     */
+    const chidrenElements = [...children].reduce((prev, child) => {
+        if (child !== null & child !== true && child !== false && child !== undefined) {
+            if (child instanceof Object) {
+                // 如果是对象
+                prev.push(child);
+            } else {
+                // 其他就是字符串，为其改造为对象
+                prev.push(createElement("text", { textContent: child }));
+            }
         }
+        return prev;
+    }, []);
+    return {
+        type,
+        props: { ...props, children: chidrenElements },
+        children: chidrenElements,
     };
 };

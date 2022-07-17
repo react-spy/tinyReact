@@ -2,5 +2,5 @@
 /dist
 /es
 /lib
-/examples
+/examples/**/node_modules/
 .DS_Store
