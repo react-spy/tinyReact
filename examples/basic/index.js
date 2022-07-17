@@ -8,7 +8,7 @@ const virtualDom = (
         1 > 2 && "我是span1"
       }
       {
-        console.log(1)
+        console.log(2)
       }
       {
         2 > 1
